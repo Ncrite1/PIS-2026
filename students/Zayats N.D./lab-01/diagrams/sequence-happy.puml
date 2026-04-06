@@ -1,0 +1,47 @@
+@startuml
+actor User
+participant "Web UI" as UI
+participant "Movie API" as API
+database "Database" as DB
+participant "Recommendation Service" as Rec
+
+User -> UI: Открыть приложение «Что посмотреть??»
+UI -> API: GET /api/movies?genres=
+activate API
+API -> DB: Запросить список фильмов по жанрам
+DB --> API: Список фильмов
+API --> UI: Отобразить список фильмов
+deactivate API
+
+User -> UI: Применить фильтры (рейтинг, год)
+UI -> API: GET /api/movies?filters=
+activate API
+API -> DB: Запросить отфильтрованные фильмы
+DB --> API: Отфильтрованный список
+API --> UI: Обновлённый список
+deactivate API
+
+User -> UI: Выбрать фильм
+UI -> API: GET /api/movies/{id}
+activate API
+API -> DB: Получить детали фильма
+DB --> API: Данные фильма
+API --> UI: Отобразить информацию о фильме
+deactivate API
+
+User -> UI: Нажать "Смотреть" или "Добавить в список"
+UI -> API: POST /api/user-list
+activate API
+API -> DB: Сохранить выбор пользователя
+DB --> API: OK
+
+API -> Rec: GetRecommendations(movie_id)
+activate Rec
+Rec --> API: Список похожих фильмов
+deactivate Rec
+
+API --> UI: 200 OK + рекомендации
+deactivate API
+
+UI --> User: Показать результат и рекомендации
+@enduml

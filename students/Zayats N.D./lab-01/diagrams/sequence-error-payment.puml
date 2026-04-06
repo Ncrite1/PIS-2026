@@ -1,0 +1,36 @@
+@startuml
+actor User
+participant "Web UI" as UI
+participant "Movie API" as API
+database "Database" as DB
+participant "Recommendation Service" as Rec
+
+User -> UI: Открыть приложение
+UI -> API: GET /api/movies
+
+activate API
+API -> DB: Запросить список фильмов
+DB --> API: Ошибка (нет соединения / сбой)
+API --> UI: 500 Internal Server Error
+deactivate API
+
+UI --> User: Показать ошибку загрузки списка
+
+User -> UI: Повторить попытку
+UI -> API: GET /api/movies
+activate API
+API -> DB: Запросить список фильмов
+DB --> API: Список фильмов
+API --> UI: Отобразить список
+deactivate API
+
+User -> UI: Выбрать фильм
+UI -> API: GET /api/movies/{id}
+activate API
+API -> DB: Получить детали фильма
+DB --> API: Ошибка (данные недоступны)
+API --> UI: 404 Not Found
+deactivate API
+
+UI --> User: Показать ошибку загрузки фильма
+@enduml
