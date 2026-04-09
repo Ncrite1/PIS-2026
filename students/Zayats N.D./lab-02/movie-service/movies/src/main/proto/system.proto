@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package movies;
+
+option java_multiple_files = true;
+option java_package = "org.example.grpc";
+option java_outer_classname = "MoviesProto";
+
+
+//  MOVIE SERVICE
+service MovieService {
+  rpc SearchMovies(SearchMoviesRequest) returns (SearchMoviesResponse);
+  rpc GetMovie(GetMovieRequest) returns (MovieDto);
+  rpc CreateMovie(CreateMovieRequest) returns (MovieDto);
+}
+
+message SearchMoviesRequest {
+  string genre = 1;
+  int32 year = 2;
+  double min_rating = 3;
+}
+
+message SearchMoviesResponse {
+  repeated MovieDto movies = 1;
+}
+
+message GetMovieRequest {
+  int64 movie_id = 1;
+}
+
+message CreateMovieRequest {
+  string title = 1;
+  string genre = 2;
+  int32 year = 3;
+  double rating = 4;
+  string description = 5;
+}
+
+message MovieDto {
+  int64 movie_id = 1;
+  string title = 2;
+  string genre = 3;
+  int32 year = 4;
+  double rating = 5;
+  string description = 6;
+}
+
+
+
+//  USER SERVICE
+service UserService {
+  rpc GetUser(GetUserRequest) returns (UserDto);
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+}
+
+message UserDto {
+  int64 user_id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+
+
+//  WATCHLIST SERVICE
+service WatchlistService {
+  rpc AddToWatchlist(AddToWatchlistRequest) returns (WatchlistDto);
+  rpc GetWatchlist(GetWatchlistRequest) returns (WatchlistDto);
+}
+
+message AddToWatchlistRequest {
+  int64 user_id = 1;
+  int64 movie_id = 2;
+}
+
+message GetWatchlistRequest {
+  int64 user_id = 1;
+}
+
+message WatchlistDto {
+  int64 user_id = 1;
+  repeated MovieDto movies = 2;
+}
+
+
+
+//  RECOMMENDATION SERVICE
+service RecommendationService {
+  rpc GetRecommendations(GetRecommendationsRequest) returns (GetRecommendationsResponse);
+}
+
+message GetRecommendationsRequest {
+  int64 user_id = 1;
+}
+
+message GetRecommendationsResponse {
+  repeated MovieDto movies = 1;
+}
