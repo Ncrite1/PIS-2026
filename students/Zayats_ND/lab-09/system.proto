@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package movie;
+
+option java_multiple_files = true;
+option java_package = "com.grpc.movie";
+option java_outer_classname = "MovieSystemProto";
+
+
+// =======================
+// MOVIE SERVICE (WRITE API)
+// =======================
+
+service MovieService {
+
+  // создать фильм
+  rpc CreateMovie(CreateMovieRequest) returns (MovieDto);
+
+  // получить фильм по id
+  rpc GetMovie(GetMovieRequest) returns (MovieDto);
+
+  // удалить фильм
+  rpc DeleteMovie(DeleteMovieRequest) returns (DeleteResponse);
+}
+
+
+// =======================
+// REQUESTS
+// =======================
+
+message CreateMovieRequest {
+  string title = 1;
+  string genre = 2;
+  double rating = 3;
+  string description = 4;
+}
+
+message GetMovieRequest {
+  int64 movie_id = 1;
+}
+
+message DeleteMovieRequest {
+  int64 movie_id = 1;
+}
+
+
+// =======================
+// RESPONSES / DTO
+// =======================
+
+message MovieDto {
+  int64 movie_id = 1;
+  string title = 2;
+  string genre = 3;
+  double rating = 4;
+  string description = 5;
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+
+// =======================
+// WATCHLIST SERVICE (extra, optional like CQRS read side)
+// =======================
+
+service WatchlistService {
+
+  rpc GetWatchlist(GetWatchlistRequest) returns (WatchlistResponse);
+}
+
+message GetWatchlistRequest {
+  int64 user_id = 1;
+}
+
+message WatchlistResponse {
+  repeated MovieDto movies = 1;
+}

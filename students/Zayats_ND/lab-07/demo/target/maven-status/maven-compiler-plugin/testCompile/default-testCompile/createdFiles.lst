@@ -1,0 +1,5 @@
+com\example\DeleteMovieHandlerTest.class
+com\example\UpdateMovieHandlerTest.class
+com\example\MovieQueryTest.class
+com\example\ServiceLayerTest.class
+com\example\CreateMovieHandlerTest.class

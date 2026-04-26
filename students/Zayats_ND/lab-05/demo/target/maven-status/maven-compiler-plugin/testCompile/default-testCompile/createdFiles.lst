@@ -1,0 +1,4 @@
+com\controllers\MovieControllerTest.class
+com\controllers\CreateMovieHandlerTest.class
+com\example\AppTest.class
+com\controllers\GetMovieHandlerTest.class
